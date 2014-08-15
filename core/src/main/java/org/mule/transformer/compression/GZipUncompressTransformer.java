@@ -10,7 +10,6 @@ import org.mule.api.transformer.DataType;
 import org.mule.api.transformer.TransformerException;
 import org.mule.config.i18n.MessageFactory;
 import org.mule.transformer.types.DataTypeFactory;
-import org.mule.util.SerializationUtils;
 import org.mule.util.compression.GZipCompression;
 
 import java.io.IOException;
@@ -56,7 +55,7 @@ public class GZipUncompressTransformer extends AbstractCompressionTransformer
                 {
                     try
                     {
-                        return SerializationUtils.deserialize(buffer, muleContext);
+                        return muleContext.getObjectSerializer().deserialize(buffer);
                     }
                     catch (SerializationException e)
                     {
@@ -68,7 +67,7 @@ public class GZipUncompressTransformer extends AbstractCompressionTransformer
                     // First try to deserialize the byte array. If it can be deserialized, then it was originally serialized.
                     try
                     {
-                        return SerializationUtils.deserialize(buffer, muleContext);
+                        return muleContext.getObjectSerializer().deserialize(buffer);
                     }
                     catch (SerializationException e)
                     {

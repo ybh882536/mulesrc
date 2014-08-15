@@ -7,21 +7,24 @@
 
 package org.mule.api.serialization;
 
-import org.mule.api.context.MuleContextAware;
-
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
- * Defines a component capable to serialize/deserealize objets into/from an arra of
+ * Defines a component capable to serialize/deserialize objects into/from an array of
  * {@link byte}s. Unlike usual serializing components, this one doesn't enforce the
  * serialized object to implement {@link Serializable}. However, some implementations
  * might require that condition and throw {@link IllegalArgumentException} if not
  * met.
+ * <p/>
+ * Implementations are also responsible for the correct initialization of classes
+ * implementing the {@link org.mule.util.store.DeserializationPostInitialisable}
+ * interface
  *
  * @since 3.6.0
  */
-public interface ObjectSerializer extends MuleContextAware
+public interface ObjectSerializer
 {
 
     /**
@@ -33,25 +36,61 @@ public interface ObjectSerializer extends MuleContextAware
      */
     public byte[] serialize(Object object);
 
+    public void serialize(Object object, OutputStream out);
+
     /**
-     * Deserealizes the given bytes. Unexpected behavior can result of deserealizing
+     * Deserializes the given bytes. Unexpected behavior can result of deserializing
      * a byte[] that was generated with another implementation.
+     * Implementation will choose the {@link java.lang.ClassLoader}
+     * to use for deserialization.
      *
      * @param bytes an array of byte that an original object was serialized into
-     * @return the deserealized object
+     * @return the deserialized object
      * @throws IllegalArgumentException if {@code bytes} is {@code null}
      * @throws SerializationException   in case of unexpected exception
      */
     public <T> T deserialize(byte[] bytes);
 
     /**
-     * Deserealizes the given stream of bytes. Unexpected behavior can result of deserealizing
+     * Deserializes the given bytes. Unexpected behavior can result of deserializing
+     * a byte[] that was generated with another implementation.
+     *
+     * @param bytes       an array of byte that an original object was serialized into
+     * @param classLoader the {@link java.lang.ClassLoader} to deserialize with
+     * @return the deserialized object
+     * @throws IllegalArgumentException if {@code bytes} is {@code null}
+     * @throws SerializationException   in case of unexpected exception
+     */
+    public <T> T deserialize(byte[] bytes, ClassLoader classLoader);
+
+    /**
+     * Deserializes the given stream of bytes. Unexpected behavior can result of deserializing
      * a stream that was generated with another implementation.
+     * Implementation will choose the {@link java.lang.ClassLoader}
+     * to use for deserialization.
+     * <p/>
+     * Even if deserialization fails, this method will close the
+     * {@code inputStream}
      *
      * @param inputStream a stream of bytes that an original object was serialized into
-     * @return the deserealized object
+     * @return the deserialized object
      * @throws IllegalArgumentException if {@code inputStream} is {@code null}
      * @throws SerializationException   in case of unexpected exception
      */
     public <T> T deserialize(InputStream inputStream);
+
+    /**
+     * Deserializes the given stream of bytes. Unexpected behavior can result of deserializing
+     * a stream that was generated with another implementation.
+     * <p/>
+     * Even if deserialization fails, this method will close the
+     * {@code inputStream}
+     *
+     * @param inputStream a stream of bytes that an original object was serialized into
+     * @param classLoader the {@link java.lang.ClassLoader} to deserialize with
+     * @return the deserialized object
+     * @throws IllegalArgumentException if {@code inputStream} is {@code null}
+     * @throws SerializationException   in case of unexpected exception
+     */
+    public <T> T deserialize(InputStream inputStream, ClassLoader classLoader);
 }

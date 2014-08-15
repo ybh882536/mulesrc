@@ -8,12 +8,9 @@
 package org.mule.serialization;
 
 import static org.mule.util.Preconditions.checkArgument;
-import org.mule.api.MuleContext;
-import org.mule.api.serialization.ObjectSerializer;
 import org.mule.api.serialization.SerializationException;
 import org.mule.util.SerializationUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -24,68 +21,41 @@ import java.io.Serializable;
  *
  * @since 3.5.0
  */
-public class JavaObjectSerializer implements ObjectSerializer
+public class JavaObjectSerializer extends AbstractObjectSerializer
 {
-
-    private MuleContext muleContext;
 
     /**
      * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException if object is not a {@link Serializable}
      */
     @Override
-    public byte[] serialize(Object object)
+    protected byte[] doSerialize(Object object) throws Exception
     {
         if (object != null && !(object instanceof Serializable))
         {
             throw new SerializationException(String.format(
                     "Was expecting a Serializable type. %s was found instead", object.getClass()
-                            .getCanonicalName()));
+                            .getName()));
         }
 
-        try
-        {
-            return SerializationUtils.serialize((Serializable) object);
-        }
-        catch (Exception e)
-        {
-            throw new SerializationException("Could not serialize object", e);
-        }
+        return SerializationUtils.serialize((Serializable) object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> T deserialize(byte[] bytes)
+    protected <T> T doDeserialize(InputStream inputStream, ClassLoader classLoader)
     {
-        checkArgument(bytes != null, "The byte[] must not be null");
-        return deserialize(new ByteArrayInputStream(bytes));
-    }
+        checkArgument(inputStream != null, "Cannot deserialize a null stream");
+        checkArgument(classLoader != null, "Cannot deserialize with a null classloader");
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T deserialize(InputStream inputStream)
-    {
-        checkArgument(inputStream != null, "Cannot deserealize a null stream");
-        try
-        {
-            return (T) SerializationUtils.deserialize(inputStream, muleContext);
-        }
-        catch (Exception e)
-        {
-            throw new SerializationException("Could not deserialize object", e);
-        }
+        return (T) SerializationUtils.deserialize(inputStream, classLoader, muleContext);
     }
 
     @Override
-    public void setMuleContext(MuleContext context)
+    protected <T> T postInitialize(T object)
     {
-        muleContext = context;
+        //does nothing since SerializationUtils already does this on its own
+        return object;
     }
-
 }

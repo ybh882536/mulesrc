@@ -8,7 +8,6 @@ package org.mule.transformer.compression;
 
 import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.types.DataTypeFactory;
-import org.mule.util.SerializationUtils;
 import org.mule.util.compression.GZipCompression;
 
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class GZipCompressTransformer extends AbstractCompressionTransformer
                 }
                 else
                 {
-                    data = SerializationUtils.serialize((Serializable) src);
+                    data = muleContext.getObjectSerializer().serialize(src);
                 }
                 return getStrategy().compressByteArray(data);
             }

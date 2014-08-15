@@ -18,8 +18,10 @@ public class JavaObjectSerializerTestCase extends AbstractObjectSerializerContra
     protected void doSetUp() throws Exception
     {
         super.doSetUp();
-        serializer = new JavaObjectSerializer();
+        JavaObjectSerializer serializer = new JavaObjectSerializer();
         serializer.setMuleContext(AbstractMuleContextTestCase.muleContext);
+
+        this.serializer = serializer;
     }
 
     @Test(expected = SerializationException.class)

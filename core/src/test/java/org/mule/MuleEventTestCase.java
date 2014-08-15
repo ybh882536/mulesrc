@@ -6,6 +6,15 @@
  */
 package org.mule;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
 import org.mule.api.ThreadSafeAccess;
@@ -24,7 +33,6 @@ import org.mule.tck.junit4.AbstractMuleContextTestCase;
 import org.mule.transformer.AbstractTransformer;
 import org.mule.transformer.simple.ByteArrayToObject;
 import org.mule.transformer.simple.SerializableToByteArray;
-import org.mule.util.SerializationUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -33,10 +41,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
 
 
 public class MuleEventTestCase extends AbstractMuleContextTestCase
@@ -192,8 +196,9 @@ public class MuleEventTestCase extends AbstractMuleContextTestCase
             payload.append("1234567890");
         }
         MuleEvent testEvent = getTestEvent(new ByteArrayInputStream(payload.toString().getBytes()));
-        byte[] serializedEvent = SerializationUtils.serialize(testEvent);
-        testEvent  = (MuleEvent)SerializationUtils.deserialize(serializedEvent);
+        byte[] serializedEvent = muleContext.getObjectSerializer().serialize(testEvent);
+        testEvent = muleContext.getObjectSerializer().deserialize(serializedEvent);
+
         assertArrayEquals((byte[])testEvent.getMessage().getPayload(), payload.toString().getBytes());
     }
 

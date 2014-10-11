@@ -6,12 +6,24 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 /**
  * The EOFProtocol class is an application level tcp protocol that does nothing.
  * Reading is terminated by the stream being closed by the client.
  */
 public class EOFProtocol extends DirectProtocol
 {
+
+    public EOFProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
+
+    public EOFProtocol(ObjectSerializer serializer, boolean streamOk, int bufferSize)
+    {
+        super(serializer, streamOk, bufferSize);
+    }
 
     /**
      * Repeat until end of file

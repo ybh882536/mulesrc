@@ -8,6 +8,7 @@ package org.mule.transport.tcp.protocols;
 
 import org.mule.api.MuleContext;
 import org.mule.api.context.MuleContextAware;
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transformer.wire.SerializedMuleMessageWireFormat;
 
 import java.io.InputStream;
@@ -25,6 +26,11 @@ public class MuleMessageSafeProtocol extends SafeProtocol implements MuleContext
 
     private final SerializedMuleMessageWireFormat wireFormat = new SerializedMuleMessageWireFormat();
     private final MuleMessageWorker messageWorker = new MuleMessageWorker(wireFormat);
+
+    public MuleMessageSafeProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
 
     @Override
     public Object read(InputStream is) throws IOException

@@ -7,6 +7,7 @@
 package org.mule.transport.tcp.protocols;
 
 import org.mule.ResponseOutputStream;
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.TcpProtocol;
 
 import java.io.IOException;
@@ -25,8 +26,16 @@ public class SafeProtocol implements TcpProtocol
 {
 
     public static final String COOKIE = "You are using SafeProtocol";
-    private TcpProtocol delegate = new LengthProtocol();
-    private TcpProtocol cookieProtocol = new LengthProtocol(COOKIE.length());
+    private TcpProtocol delegate;
+    private TcpProtocol cookieProtocol;
+    private ObjectSerializer serializer;
+
+    public SafeProtocol(ObjectSerializer serializer)
+    {
+        this.serializer = serializer;
+        delegate = new LengthProtocol(serializer);
+        cookieProtocol = new LengthProtocol(serializer, COOKIE.length());
+    }
 
     public Object read(InputStream is) throws IOException
     {
@@ -111,7 +120,7 @@ public class SafeProtocol implements TcpProtocol
 
     public void setMaxMessageLength(int maxMessageLength)
     {
-        delegate = new LengthProtocol(maxMessageLength);
+        delegate = new LengthProtocol(serializer, maxMessageLength);
     }
 
 }

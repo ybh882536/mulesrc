@@ -6,33 +6,36 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import static org.junit.Assert.assertEquals;
+import org.mule.api.MuleContext;
+import org.mule.api.serialization.ObjectSerializer;
+import org.mule.tck.SerializationTestUtils;
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.tck.size.SmallTest;
 import org.mule.transport.tcp.TcpProtocol;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import org.mockito.Mock;
 
 @SmallTest
 public class DefaultProtocolTestCase extends AbstractMuleTestCase
 {
 
-    private TcpProtocol protocol;
-    private int expectedLength;
+    protected TcpProtocol protocol;
+    protected int expectedLength;
+    protected ObjectSerializer serializer;
 
-    public DefaultProtocolTestCase()
+    @Mock
+    private MuleContext muleContext;
+
+
+    @Before
+    public void before()
     {
-        // for old (full buffer) condition in DefaultProtocol
-//        this(new DefaultProtocol(), 1);
-
-        this(new DirectProtocol(), SlowInputStream.FULL_LENGTH);
-    }
-
-    protected DefaultProtocolTestCase(TcpProtocol protocol, int expectedLength)
-    {
-        this.protocol = protocol;
-        this.expectedLength = expectedLength;
+        this.serializer = SerializationTestUtils.getJavaSerializerWithMockContext();
+        protocol = new DirectProtocol(serializer);
+        expectedLength = SlowInputStream.FULL_LENGTH;
     }
 
     @Test

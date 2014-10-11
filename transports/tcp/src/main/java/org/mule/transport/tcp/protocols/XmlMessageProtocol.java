@@ -6,6 +6,8 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
@@ -55,9 +57,9 @@ public class XmlMessageProtocol extends AbstractByteProtocol
 
     private ConcurrentMap pbMap = new ConcurrentHashMap();
 
-    public XmlMessageProtocol()
+    public XmlMessageProtocol(ObjectSerializer serializer)
     {
-        super(STREAM_OK);
+        super(serializer, STREAM_OK);
     }
 
     public Object read(InputStream is) throws IOException

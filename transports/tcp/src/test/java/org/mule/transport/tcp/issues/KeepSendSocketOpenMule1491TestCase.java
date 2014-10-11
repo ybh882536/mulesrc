@@ -123,7 +123,7 @@ public class KeepSendSocketOpenMule1491TestCase extends AbstractServiceAndFlowTe
         {
             try
             {
-                LengthProtocol protocol = new LengthProtocol();
+                LengthProtocol protocol = new LengthProtocol(muleContext.getObjectSerializer());
                 while (true)
                 {
                     Socket socket = server.accept();

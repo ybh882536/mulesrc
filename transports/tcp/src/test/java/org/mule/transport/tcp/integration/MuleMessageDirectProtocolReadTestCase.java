@@ -20,6 +20,6 @@ public class MuleMessageDirectProtocolReadTestCase extends AbstractMuleMessagePr
     @Override
     protected TcpProtocol createMuleMessageProtocol()
     {
-        return new DirectProtocol();
+        return new DirectProtocol(muleContext.getObjectSerializer());
     }
 }

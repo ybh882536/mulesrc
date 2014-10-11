@@ -6,18 +6,20 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 public class LengthProtocolTestCase extends DefaultProtocolTestCase
 {
 
-    public LengthProtocolTestCase()
+    @Override
+    public void before()
     {
-        super(new LengthProtocol(), 1);
+        protocol = new LengthProtocol(serializer);
+        expectedLength = 1;
     }
 
     @Test

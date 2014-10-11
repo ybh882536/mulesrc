@@ -9,6 +9,7 @@ package org.mule.transport.tcp.protocols;
 
 import org.mule.ResponseOutputStream;
 import org.mule.api.MuleMessage;
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.TcpProtocol;
 import org.mule.util.ClassUtils;
 import org.mule.util.IOUtils;
@@ -22,8 +23,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This Abstract class has been introduced so as to have the byte protocols (i.e. the
@@ -39,7 +40,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class AbstractByteProtocol implements TcpProtocol
 {
-    private static final Log logger = LogFactory.getLog(DirectProtocol.class);
+    private static final Logger logger = LoggerFactory.getLogger(DirectProtocol.class);
     private static final long PAUSE_PERIOD = 100;
     public static final int EOF = -1;
 
@@ -48,9 +49,11 @@ public abstract class AbstractByteProtocol implements TcpProtocol
     public static final boolean NO_STREAM = false;
     private boolean streamOk;
     private boolean rethrowExceptionOnRead = false;
+    private final ObjectSerializer serializer;
 
-    public AbstractByteProtocol(boolean streamOk)
+    public AbstractByteProtocol(ObjectSerializer serializer, boolean streamOk)
     {
+        this.serializer = serializer;
         this.streamOk = streamOk;
     }
 

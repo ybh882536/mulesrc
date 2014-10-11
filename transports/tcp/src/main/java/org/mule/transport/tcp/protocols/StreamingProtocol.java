@@ -6,6 +6,7 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.TcpInputStream;
 import org.mule.transport.tcp.TcpProtocol;
 
@@ -16,9 +17,14 @@ import java.io.OutputStream;
 public class StreamingProtocol extends EOFProtocol implements TcpProtocol
 {
 
-    public StreamingProtocol()
+    public StreamingProtocol(ObjectSerializer serializer)
     {
-        super();
+        super(serializer);
+    }
+
+    public StreamingProtocol(ObjectSerializer serializer, boolean streamOk, int bufferSize)
+    {
+        super(serializer, streamOk, bufferSize);
     }
 
     public Object read(InputStream is) throws IOException

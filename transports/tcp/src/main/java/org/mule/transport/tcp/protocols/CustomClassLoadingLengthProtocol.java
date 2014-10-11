@@ -6,6 +6,8 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,6 +24,16 @@ public class CustomClassLoadingLengthProtocol extends LengthProtocol
     private final Logger logger = Logger.getLogger(this.getClass());
 
     private ClassLoader classLoader;
+
+    public CustomClassLoadingLengthProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
+
+    public CustomClassLoadingLengthProtocol(ObjectSerializer serializer, int maxMessageLength)
+    {
+        super(serializer, maxMessageLength);
+    }
 
     @Override
     public Object read(InputStream is) throws IOException

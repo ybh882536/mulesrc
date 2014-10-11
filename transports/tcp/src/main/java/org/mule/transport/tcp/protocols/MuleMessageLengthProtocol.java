@@ -8,6 +8,7 @@ package org.mule.transport.tcp.protocols;
 
 import org.mule.api.MuleContext;
 import org.mule.api.context.MuleContextAware;
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transformer.wire.SerializedMuleMessageWireFormat;
 
 import java.io.IOException;
@@ -25,6 +26,16 @@ public class MuleMessageLengthProtocol extends LengthProtocol implements MuleCon
 
     private final SerializedMuleMessageWireFormat wireFormat = new SerializedMuleMessageWireFormat();
     private final MuleMessageWorker messageWorker = new MuleMessageWorker(wireFormat);
+
+    public MuleMessageLengthProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
+
+    public MuleMessageLengthProtocol(ObjectSerializer serializer, int maxMessageLength)
+    {
+        super(serializer, maxMessageLength);
+    }
 
     @Override
     public Object read(InputStream is) throws IOException

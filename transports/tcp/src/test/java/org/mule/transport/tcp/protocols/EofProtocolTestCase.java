@@ -6,14 +6,13 @@
  */
 package org.mule.transport.tcp.protocols;
 
-import org.mule.transport.tcp.protocols.EOFProtocol;
-
 public class EofProtocolTestCase extends DefaultProtocolTestCase
 {
 
-    public EofProtocolTestCase()
+    @Override
+    public void before()
     {
-        super(new EOFProtocol(), SlowInputStream.FULL_LENGTH);
+        super.before();
+        protocol = new EOFProtocol(serializer);
     }
-
 }

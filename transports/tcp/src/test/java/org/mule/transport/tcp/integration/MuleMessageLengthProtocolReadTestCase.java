@@ -20,6 +20,6 @@ public class MuleMessageLengthProtocolReadTestCase extends AbstractMuleMessagePr
     @Override
     protected TcpProtocol createMuleMessageProtocol()
     {
-        return new LengthProtocol();
+        return new LengthProtocol(muleContext.getObjectSerializer());
     }
 }

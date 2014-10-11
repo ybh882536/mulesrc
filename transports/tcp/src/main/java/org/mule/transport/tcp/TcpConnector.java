@@ -101,7 +101,7 @@ public class TcpConnector extends AbstractConnector
         sendTcpNoDelay = Boolean.valueOf(System.getProperty(SEND_TCP_NO_DELAY_SYSTEM_PROPERTY));
         setSocketFactory(new TcpSocketFactory());
         setServerSocketFactory(new TcpServerSocketFactory());
-        setTcpProtocol(new SafeProtocol());
+        setTcpProtocol(new SafeProtocol(muleContext.getObjectSerializer()));
     }
 
     public void configureSocket(boolean client, Socket socket) throws SocketException

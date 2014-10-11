@@ -20,6 +20,6 @@ public class MuleMessageEofProtocolReadTestCase extends AbstractMuleMessageProto
     @Override
     protected TcpProtocol createMuleMessageProtocol()
     {
-        return new EOFProtocol();
+        return new EOFProtocol(muleContext.getObjectSerializer());
     }
 }

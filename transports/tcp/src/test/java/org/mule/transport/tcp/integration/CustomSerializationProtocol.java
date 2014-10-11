@@ -6,6 +6,7 @@
  */
 package org.mule.transport.tcp.integration;
 
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.protocols.DirectProtocol;
 
 import java.io.IOException;
@@ -16,6 +17,16 @@ import org.apache.commons.lang.SerializationUtils;
 
 public class CustomSerializationProtocol extends DirectProtocol
 {
+
+    public CustomSerializationProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
+
+    public CustomSerializationProtocol(ObjectSerializer serializer, boolean streamOk, int bufferSize)
+    {
+        super(serializer, streamOk, bufferSize);
+    }
 
     @Override
     public void write(OutputStream os, Object data) throws IOException

@@ -6,6 +6,8 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -34,14 +36,14 @@ public class DirectProtocol extends AbstractByteProtocol
     
     protected int bufferSize;
 
-    public DirectProtocol()
+    public DirectProtocol(ObjectSerializer serializer)
     {
-        this(STREAM_OK, DEFAULT_BUFFER_SIZE);
+        this(serializer, STREAM_OK, DEFAULT_BUFFER_SIZE);
     }
 
-    public DirectProtocol(boolean streamOk, int bufferSize)
+    public DirectProtocol(ObjectSerializer serializer, boolean streamOk, int bufferSize)
     {
-        super(streamOk);
+        super(serializer, streamOk);
         this.bufferSize = bufferSize;
     }
 

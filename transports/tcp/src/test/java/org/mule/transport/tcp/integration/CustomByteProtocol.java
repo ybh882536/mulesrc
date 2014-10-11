@@ -6,6 +6,7 @@
  */
 package org.mule.transport.tcp.integration;
 
+import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.protocols.AbstractByteProtocol;
 
 import java.io.ByteArrayOutputStream;
@@ -19,9 +20,9 @@ public class CustomByteProtocol extends AbstractByteProtocol
     /**
      * Create a CustomSerializationProtocol object.
      */
-    public CustomByteProtocol()
+    public CustomByteProtocol(ObjectSerializer serializer)
     {
-        super(false); // This protocol does not support streaming.
+        super(serializer, false); // This protocol does not support streaming.
     }
 
     /**

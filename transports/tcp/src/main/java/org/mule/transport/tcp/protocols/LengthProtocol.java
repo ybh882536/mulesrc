@@ -6,6 +6,8 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,14 +35,14 @@ public class LengthProtocol extends DirectProtocol
     public static final int NO_MAX_LENGTH = -1;
     private int maxMessageLength;
 
-    public LengthProtocol()
+    public LengthProtocol(ObjectSerializer serializer)
     {
-        this(NO_MAX_LENGTH);
+        this(serializer, NO_MAX_LENGTH);
     }
 
-    public LengthProtocol(int maxMessageLength)
+    public LengthProtocol(ObjectSerializer serializer, int maxMessageLength)
     {
-        super(NO_STREAM, SIZE_INT);
+        super(serializer, NO_STREAM, SIZE_INT);
         this.setMaxMessageLength(maxMessageLength);
     }
 

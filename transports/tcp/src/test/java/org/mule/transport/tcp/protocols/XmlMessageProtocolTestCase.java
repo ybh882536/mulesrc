@@ -6,6 +6,11 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.mule.api.serialization.ObjectSerializer;
+import org.mule.tck.SerializationTestUtils;
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.tck.size.SmallTest;
 
@@ -16,10 +21,6 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 /**
  * Test by reading characters from a fixed StringBuilder instead of a TCP port.
  */
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertNull;
 public class XmlMessageProtocolTestCase extends AbstractMuleTestCase
 {
     private XmlMessageProtocol xmp;
+    protected ObjectSerializer serializer;
 
     protected void setProtocol(XmlMessageProtocol xmp)
     {
@@ -41,7 +43,8 @@ public class XmlMessageProtocolTestCase extends AbstractMuleTestCase
     @Before
     public void doSetUp()
     {
-        setProtocol(new XmlMessageProtocol());
+        serializer = SerializationTestUtils.getJavaSerializerWithMockContext();
+        setProtocol(new XmlMessageProtocol(serializer));
     }
 
     protected void doTearDown() throws Exception

@@ -19,7 +19,6 @@ import org.mule.transport.tcp.protocols.DirectProtocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
-import java.security.Provider;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLServerSocket;
@@ -51,7 +50,7 @@ public class SslConnector extends TcpConnector
         super(context);
         setSocketFactory(new SslSocketFactory(tls));
         setServerSocketFactory(new SslServerSocketFactory(tls));
-        setTcpProtocol(new DirectProtocol());
+        setTcpProtocol(new DirectProtocol(muleContext.getObjectSerializer()));
         // setting this true causes problems as socket closes before handshake finishes
         setValidateConnections(false);
     }

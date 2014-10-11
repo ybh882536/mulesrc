@@ -20,6 +20,6 @@ public class MuleMessageSafeProtocolReadTestCase extends AbstractMuleMessageProt
     @Override
     protected TcpProtocol createMuleMessageProtocol()
     {
-        return new SafeProtocol();
+        return new SafeProtocol(muleContext.getObjectSerializer());
     }
 }

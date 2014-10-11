@@ -6,12 +6,19 @@
  */
 package org.mule.transport.tcp.protocols;
 
+import org.mule.api.serialization.ObjectSerializer;
+
 /**
  * Extend {@link org.mule.transport.tcp.protocols.XmlMessageProtocol} to continue reading
  * until either a new message or EOF is found.
  */
 public class XmlMessageEOFProtocol extends XmlMessageProtocol
 {
+
+    public XmlMessageEOFProtocol(ObjectSerializer serializer)
+    {
+        super(serializer);
+    }
 
     /**
      * Continue reading til EOF or new document found

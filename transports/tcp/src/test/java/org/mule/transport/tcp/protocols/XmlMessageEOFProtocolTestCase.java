@@ -15,7 +15,7 @@ public class XmlMessageEOFProtocolTestCase extends XmlMessageProtocolTestCase
     @Override
     public void doSetUp()
     {
-        setProtocol(new XmlMessageEOFProtocol());
+        setProtocol(new XmlMessageEOFProtocol(serializer));
     }
 
     @Override

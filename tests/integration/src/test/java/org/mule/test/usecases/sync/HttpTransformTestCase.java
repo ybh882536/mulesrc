@@ -8,7 +8,6 @@ package org.mule.test.usecases.sync;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.mule.api.MuleMessage;
 import org.mule.api.client.MuleClient;
 import org.mule.tck.AbstractServiceAndFlowTestCase;
@@ -16,7 +15,6 @@ import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.transformer.compression.GZipUncompressTransformer;
 import org.mule.transformer.simple.ByteArrayToSerializable;
 import org.mule.transformer.types.DataTypeFactory;
-import org.mule.util.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +67,9 @@ public class HttpTransformTestCase extends AbstractServiceAndFlowTestCase
         MuleClient client = muleContext.getClient();
         ArrayList<Integer> payload = new ArrayList<Integer>();
         payload.add(42);
-        MuleMessage message = client.send(String.format("http://localhost:%d/RemoteService", httpPort2.getNumber()), SerializationUtils.serialize(payload), null);
+        MuleMessage message = client.send(String.format("http://localhost:%d/RemoteService", httpPort2.getNumber()),
+                                          muleContext.getObjectSerializer().serialize(payload),
+                                          null);
         assertNotNull(message);
         ByteArrayToSerializable bas = new ByteArrayToSerializable();
         bas.setMuleContext(muleContext);

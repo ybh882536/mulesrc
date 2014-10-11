@@ -18,7 +18,7 @@ import java.io.Serializable;
  * mechanism. This means that exceptions will come from serializing objects that do
  * not implement {@link Serializable}
  *
- * @since 3.5.0
+ * @since 3.6.0
  */
 public class JavaObjectSerializer extends AbstractObjectSerializer
 {

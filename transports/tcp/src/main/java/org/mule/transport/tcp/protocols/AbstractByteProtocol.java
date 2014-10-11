@@ -13,7 +13,6 @@ import org.mule.api.serialization.ObjectSerializer;
 import org.mule.transport.tcp.TcpProtocol;
 import org.mule.util.ClassUtils;
 import org.mule.util.IOUtils;
-import org.mule.util.SerializationUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +90,7 @@ public abstract class AbstractByteProtocol implements TcpProtocol
         }
         else if (data instanceof Serializable)
         {
-            writeByteArray(os, SerializationUtils.serialize((Serializable) data));
+            writeByteArray(os, serializer.serialize(data));
         }
         else
         {

@@ -25,7 +25,7 @@ import org.mule.api.serialization.ObjectSerializer;
 import org.mule.api.store.ObjectStore;
 import org.mule.api.store.ObjectStoreException;
 import org.mule.api.store.ObjectStoreManager;
-import org.mule.serialization.JavaObjectSerializer;
+import org.mule.tck.SerializationTestUtils;
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.util.concurrent.Latch;
@@ -101,10 +101,7 @@ public class IdempotentRedeliveryPolicyTestCase extends AbstractMuleTestCase
         });
         when(event.getMessage()).thenReturn(message);
 
-        when(mockMuleContext.getExecutionClassLoader()).thenReturn(getClass().getClassLoader());
-        JavaObjectSerializer serializer = new JavaObjectSerializer();
-        serializer.setMuleContext(mockMuleContext);
-        IdempotentRedeliveryPolicyTestCase.serializer = serializer;
+        IdempotentRedeliveryPolicyTestCase.serializer = SerializationTestUtils.getJavaSerializerWithMockContext();
 
         irp.setMaxRedeliveryCount(MAX_REDELIVERY_COUNT);
         irp.setUseSecureHash(true);
